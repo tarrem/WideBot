@@ -24,19 +24,6 @@ int main(int argv, char** argc) {
   cURLpp::initialize();
   cURLpp::Easy curl;
 
-  std::string filename = "gif.gif";
-  std::list<Magick::Image> images;
-  std::cout << "Reading images " << filename << std::endl;
-  try{
-    Magick::readImages(&images, filename);
-  }
-  catch (std::exception & e) {
-    std::cerr << e.what() << std::endl;
-  }
-  std::cout << "Opened " << filename << " with " << images.size() << " frames\n";
-  Magick::writeImages(images.begin(), images.end(), "test.gif");
-  std::cout << "Wrote gif to test.gif\n";
-
   WideBot wideBot(token,
                   SleepyDiscord::USER_CONTROLED_THREADS,
                   &curl);
