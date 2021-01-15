@@ -21,7 +21,7 @@ target_link_libraries(WideBot sleepy-discord)
 pkg_check_modules(CURLPP REQUIRED curlpp)
 target_link_libraries(WideBot ${CURLPP_LDFLAGS})
 
-find_package(ImageMagick REQUIRED COMPONENTS Magick++ MagickCore)
+find_package(ImageMagick 7 REQUIRED COMPONENTS Magick++ MagickCore MagickWand)
 if (ImageMagick_FOUND)
   message(STATUS "Found ImageMagick")
   message(STATUS "ImageMagick Libraries: " ${ImageMagick_LIBRARIES})
