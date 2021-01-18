@@ -18,6 +18,7 @@ git clone --recursive https://github.com/tarrem/WideBot.git
 mkdir build && cd build
 cmake ..
 cmake --build .
+./WideBot
 ```
 
 ### Build notes:
