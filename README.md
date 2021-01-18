@@ -8,11 +8,13 @@ Requirements:
 - cURLpp
 - ImageMagick
 
-1. Create a bot and obtain the bot token at https://discord.com/developers.
+1. Create a bot at https://discord.com/developers.
 
-2. Place token in token.txt
+2. In the OAuth2 section, enable the Bot scope and "Send Messages" and "Attach Files" bot permissions, then go to the generated URL and invite the bot to your server.
 
-3. Build and run the bot
+3. Place the bot token in token.txt
+
+4. Build and run the bot
 ```
 git clone --recursive https://github.com/tarrem/WideBot.git
 mkdir build && cd build
