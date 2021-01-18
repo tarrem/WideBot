@@ -27,7 +27,7 @@ See https://yourwaifu.dev/sleepy-discord/setup-standard-cli.html#common-errors f
 
 ## Usage
 
-Attach and caption and image or gif with `!wide [num_splits]` to stretch and split the images
+In Discord, attach and caption and image or gif with `!wide [num_splits]` and the bot will upload the modified images.
 
 ## To-Do
 - [ ] Re-optimize gifs transformation
