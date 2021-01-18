@@ -37,4 +37,4 @@ In Discord, attach and caption and image or gif with `!wide [num_splits]` and th
 - [ ] Option to stretch without splitting
 - [ ] Delete cached images
 - [ ] Custom command prefix
-
+- [ ] Detect empty/invlid token file
