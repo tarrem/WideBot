@@ -15,6 +15,10 @@ using namespace SleepyDiscord;
 using namespace cURLpp;
 
 void WideBot::onMessage(Message message) {
+  if (message.startsWith("!help")) {
+    sendMessage(message.channelID, "Caption and image attachment with `!wide [num_splits]` to split and widen and image for emojis!");
+  }
+
   if (message.startsWith("!hello")) {
     std::string response = "Hello, " + message.author.username + "!";
     sendMessage(message.channelID, response);
