@@ -19,11 +19,6 @@ void WideBot::onMessage(Message message) {
     sendMessage(message.channelID, "Caption and image attachment with `!wide [num_splits]` to split and widen and image for emojis!");
   }
 
-  if (message.startsWith("!hello")) {
-    std::string response = "Hello, " + message.author.username + "!";
-    sendMessage(message.channelID, response);
-  }
-
   if (message.startsWith(wideCommand)) {
     if (message.attachments.empty()) {
       sendMessage(message.channelID, "Error: no attachment found");

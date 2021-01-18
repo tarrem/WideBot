@@ -23,7 +23,6 @@ target_link_libraries(WideBot ${CURLPP_LDFLAGS})
 
 find_package(ImageMagick 7 REQUIRED COMPONENTS Magick++ MagickCore MagickWand)
 if (ImageMagick_FOUND)
-  message(STATUS "Found ImageMagick")
   message(STATUS "ImageMagick Libraries: " ${ImageMagick_LIBRARIES})
   message(STATUS "ImageMagick Include Directories: " ${ImageMagick_INCLUDE_DIRS})
 endif (ImageMagick_FOUND)
