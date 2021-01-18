@@ -68,34 +68,37 @@ void WideBot::onMessage(Message message) {
 
       auto splits = splitImage(image, num_splits);
 
-      std::cout << "Writing and uploading... ";
+      std::cout << "Writing and uploading... \n";
       for (int i = 0; i < num_splits; i++) {
-        std::string format = image.front().magick();
-        for(int i = 0; i < format.length(); i++) {
-          format[i] = std::tolower(format[i]);
+        std::string name, format;
+        for (size_t i = f.filename.length(); i > 0; i--) {
+          if (f.filename[i] == '.') {
+            name = f.filename.substr(0, i);
+            format = f.filename.substr(i, std::string::npos);
+            break;
+          }
         }
-        std::string out_filename = "wide" + image.front().fileName() + std::to_string(i+1) + '.' + format;
+        std::string out_filename = "wide" + name + std::to_string(i+1) + format;
         std::cout << "Writing " << out_filename << std::endl;
         Magick::writeImages(splits[i].begin(), splits[i].end(), out_filename);
 
         uploadFile(message.channelID, out_filename, "");
       }
-      std::cout << "done.\n";
     }
   }
 }
 
 int WideBot::parseNumSplits(std::string& message) {
   int num_splits = 0;
-  std::string msg = message.substr(wideCommand.length(), std::string::npos);
-  if (msg[0] == ' ') { msg.erase(0, 1); }
-  std::cout << "Message: " << msg << std::endl;
-  try {
-    num_splits = std::stoi(msg);
-  }
-  catch (std::invalid_argument &e) {
-    std::cerr << "Unknown number of splits argument " << msg << std::endl;
-    return 0;
+  for(size_t i = wideCommand.length(); i < message.length(); i++) {
+    if (message[i] == ' ' && message[i+1] != ' ') {
+       try {
+         num_splits = std::stoi(message.substr(i, std::string::npos));
+         return num_splits;
+       }
+       catch (std::invalid_argument &e) {
+       }
+    }
   }
   return  num_splits;
 }
