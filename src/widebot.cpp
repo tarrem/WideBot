@@ -17,73 +17,75 @@ using namespace cURLpp;
 namespace widebot {
 
   void WideBot::onMessage(Message message) {
-    if (message.startsWith(getCommand(commands.HELP))) {
-      sendMessage(message.channelID, "Caption and image attachment with `!wide [num_splits]` to split and widen and image for emojis!");
-    }
+    if (message.startsWith(prefix_)) { 
+      Command command = parseCommand(message.content);
 
-    if (message.startsWith(getCommand(commands.WIDE))) {
-      if (message.attachments.empty()) {
-        sendMessage(message.channelID, "Error: no attachment found");
-        return;
-      }
-
-      int num_splits = parseNumSplits(message.content);
-      if (num_splits < 1) {
-        num_splits = 2;
-        std::cout << "Defaulting to 2 splits\n";
-      } else {
-        std::cout << "Using " << num_splits << " splits.\n";
-      }
-
-      std::cout << "Recieved attachment: " << std::endl;
-      for (const auto& f : message.attachments) {
-        std::cout << '\t' << f.filename << " at " << f.url << std::endl;
-
-        std::list<Magick::Image> image;
-
-        std::stringstream out;
-        try { 
-
-          curl_->setOpt(Options::Url(f.url));
-          curl_->setOpt(Options::WriteStream(&out));
-          curl_->perform();
+      if(command = commands.HELP) {
+        sendMessage(message.channelID, "Caption and image attachment with `!wide [num_splits]` to split and widen and image for emojis!");
+      } else if (command = commands.WIDE) {
+        if (message.attachments.empty()) {
+          sendMessage(message.channelID, "Error: no attachment found");
+          return;
         }
-        catch (cURLpp::RuntimeError& e) {
-          std::cerr << e.what() << std::endl;
-          sendMessage(message.channelID, e.what()); // TODO make this friendly
+
+        int num_splits = parseNumSplits(message.content);
+        if (num_splits < 1) {
+          num_splits = 2;
+          std::cout << "Defaulting to 2 splits\n";
+        } else {
+          std::cout << "Using " << num_splits << " splits.\n";
         }
-        catch (cURLpp::LogicError& e) {
-          std::cerr << e.what() << std::endl;
-          sendMessage(message.channelID, e.what()); // TODO make this friendly
-        }
-        out.seekg(0, std::ios::end);
-        long size = out.tellg();
-        out.seekg(0, std::ios::beg);
-        char data[size];
-        out.read(data, size);
-        Magick::Blob blob(data, size);
 
-        std::list<Magick::Image> raw_image;
-        Magick::readImages(&raw_image, blob);
-        Magick::coalesceImages(&image, raw_image.begin(), raw_image.end());
+        std::cout << "Recieved attachment: " << std::endl;
+        for (const auto& f : message.attachments) {
+          std::cout << '\t' << f.filename << " at " << f.url << std::endl;
 
-        auto splits = splitImage(image, num_splits);
+          std::list<Magick::Image> image;
 
-        std::cout << "Writing and uploading... \n";
-        for (int i = 0; i < num_splits; i++) {
-          std::string name, format;
-          for (size_t i = f.filename.length(); i > 0; i--) {
-            if (f.filename[i] == '.') {
-              name = f.filename.substr(0, i);
-              format = f.filename.substr(i, std::string::npos);
-              break;
-            }
+          std::stringstream out;
+          try { 
+
+            curl_->setOpt(Options::Url(f.url));
+            curl_->setOpt(Options::WriteStream(&out));
+            curl_->perform();
           }
-          std::string out_filename = "wide" + name + std::to_string(i+1) + format;
-          std::cout << "Writing " << out_filename << std::endl;
-          Magick::writeImages(splits[i].begin(), splits[i].end(), out_filename);
+          catch (cURLpp::RuntimeError& e) {
+            std::cerr << e.what() << std::endl;
+            sendMessage(message.channelID, e.what()); // TODO make this friendly
+          }
+          catch (cURLpp::LogicError& e) {
+            std::cerr << e.what() << std::endl;
+            sendMessage(message.channelID, e.what()); // TODO make this friendly
+          }
+          out.seekg(0, std::ios::end);
+          long size = out.tellg();
+          out.seekg(0, std::ios::beg);
+          char data[size];
+          out.read(data, size);
+          Magick::Blob blob(data, size);
 
-          uploadFile(message.channelID, out_filename, "");
+          std::list<Magick::Image> raw_image;
+          Magick::readImages(&raw_image, blob);
+          Magick::coalesceImages(&image, raw_image.begin(), raw_image.end());
+
+          auto splits = splitImage(image, num_splits);
+
+          std::cout << "Writing and uploading... \n";
+          for (int i = 0; i < num_splits; i++) {
+            std::string name, format;
+            for (size_t i = f.filename.length(); i > 0; i--) {
+              if (f.filename[i] == '.') {
+                name = f.filename.substr(0, i);
+                format = f.filename.substr(i, std::string::npos);
+                break;
+              }
+            }
+            std::string out_filename = "wide" + name + std::to_string(i+1) + format;
+            std::cout << "Writing " << out_filename << std::endl;
+            Magick::writeImages(splits[i].begin(), splits[i].end(), out_filename);
+
+            uploadFile(message.channelID, out_filename, "");
+          }
         }
       }
     }
