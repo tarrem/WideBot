@@ -35,6 +35,8 @@ In Discord, attach and caption and image or gif with `!wide [num_splits]` and th
 - [ ] Re-optimize gifs transformation
 - [ ] Option to automatically upload guild emoji
 - [ ] Option to stretch without splitting
+  - [ ] ImageProcessor class (::split, ::stretch)
 - [ ] Delete cached images
-- [ ] Custom command prefix
+- [x] Custom command prefix
+- [ ] Handle quotations and code blocks in prefix command
 - [ ] Detect empty/invlid token file
