@@ -8,16 +8,19 @@ Requirements:
 - cURLpp
 - ImageMagick
 
-1. Create a bot and obtain the bot token at https://discord.com/developers.
+1. Create a bot at https://discord.com/developers.
 
-2. Place token in token.txt
+2. In the OAuth2 section, enable the Bot scope and "Send Messages" and "Attach Files" bot permissions, then go to the generated URL and invite the bot to your server.
 
-3. Build and run the bot
+3. Place the bot token in token.txt
+
+4. Build and run the bot
 ```
 git clone --recursive https://github.com/tarrem/WideBot.git
 mkdir build && cd build
 cmake ..
 cmake --build .
+./WideBot
 ```
 
 ### Build notes:
@@ -26,7 +29,7 @@ See https://yourwaifu.dev/sleepy-discord/setup-standard-cli.html#common-errors f
 
 ## Usage
 
-Attach and caption and image or gif with `!wide [num_splits]` to stretch and split the images
+In Discord, attach and caption and image or gif with `!wide [num_splits]` and the bot will upload the modified images.
 
 ## To-Do
 - [ ] Re-optimize gifs transformation
@@ -34,4 +37,4 @@ Attach and caption and image or gif with `!wide [num_splits]` to stretch and spl
 - [ ] Option to stretch without splitting
 - [ ] Delete cached images
 - [ ] Custom command prefix
-
+- [ ] Detect empty/invlid token file
