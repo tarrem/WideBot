@@ -41,3 +41,4 @@ In Discord, attach and caption and image or gif with `!wide [num_splits]` and th
 - [ ] Handle quotations and code blocks in prefix command
 - [ ] Detect empty/invlid token file
 - [ ] Role-based num_splits limit
+- [ ] Split arguments into array
