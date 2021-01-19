@@ -1,4 +1,4 @@
-#include <WideBot.hpp>
+#include <widebot.hpp>
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Easy.hpp>
 #include <sstream>
@@ -24,7 +24,7 @@ int main(int argv, char** argc) {
   cURLpp::initialize();
   cURLpp::Easy curl;
 
-  WideBot wideBot(token,
+  widebot::WideBot wideBot(token,
                   SleepyDiscord::USER_CONTROLED_THREADS,
                   &curl);
   wideBot.run();
