@@ -18,22 +18,32 @@ namespace widebot {
 
   void WideBot::onMessage(Message message) {
     if (message.startsWith(prefix_)) { 
-      Command command = parseCommand(message.content);
+      std::cout << "Recieved command: " << message.content << std::endl;
+      std::string cmd, args;
+      parseCommand(message.content, &cmd, &args);
+      std::cout << "Command: " << cmd << std::endl << "Args: " << args << std::endl;
 
-      if(command = commands.HELP) {
-        sendMessage(message.channelID, "Caption and image attachment with `!wide [num_splits]` to split and widen and image for emojis!");
-      } else if (command = commands.WIDE) {
+      if(cmd == commands.HELP) {
+        sendMessage(message.channelID, "Caption and image attachment with `" + prefix_ + "wide [num_splits]` to split and widen and image for emojis!");
+      } else if (cmd == commands.PREFIX) {
+        if (args.empty()) {
+          prefix_ = "!";
+          sendMessage(message.channelID, "Resetting prefix to `" + prefix_ + "`.");
+        } else {
+          prefix_ = args;
+          sendMessage(message.channelID, "Setting the command prefix to `" + args + "`.");
+        }
+      } else if (cmd == commands.WIDE) {
         if (message.attachments.empty()) {
           sendMessage(message.channelID, "Error: no attachment found");
           return;
         }
 
-        int num_splits = parseNumSplits(message.content);
+        int num_splits = parseNumSplits(args);
+        std::cout << "Using " << num_splits << " splits.\n";
         if (num_splits < 1) {
           num_splits = 2;
           std::cout << "Defaulting to 2 splits\n";
-        } else {
-          std::cout << "Using " << num_splits << " splits.\n";
         }
 
         std::cout << "Recieved attachment: " << std::endl;
@@ -91,16 +101,16 @@ namespace widebot {
     }
   }
 
-  int WideBot::parseNumSplits(std::string& message) {
+  int WideBot::parseNumSplits(const std::string& args) {
     int num_splits = 0;
-    for(size_t i = getCommand(commands.WIDE).length(); i < message.length(); i++) {
-      if (message[i] == ' ' && message[i+1] != ' ') {
-         try {
-           num_splits = std::stoi(message.substr(i, std::string::npos));
-           return num_splits;
-         }
-         catch (std::invalid_argument &e) {
-         }
+    // assumes the number of splits is the first integer argument
+    for(size_t i = 0; i < args.length(); i++) {
+      try {
+        num_splits = std::stoi(args.substr(i));
+        return num_splits;
+      }
+      catch (std::invalid_argument &e) {
+        std::cerr << "Unable to parse splits argument\n";
       }
     }
     return  num_splits;
@@ -135,6 +145,18 @@ namespace widebot {
     std::cout << "done.\n";
 
     return splits;
+  }
+
+  int WideBot::parseCommand(const std::string& msg, std::string* cmd, std::string* args) {
+    for(size_t i = prefix_.length(); i < msg.length(); i++) {
+      if(msg[i] == ' ') { 
+        cmd->assign(msg.substr(prefix_.length(), i - prefix_.length()));
+        args->assign(msg.substr(i + 1));
+        return 1;
+      }
+    }
+    cmd->assign(msg.substr(prefix_.length()));
+    return 0;
   }
 
 } //namespace widebot
