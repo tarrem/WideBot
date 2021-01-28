@@ -14,6 +14,7 @@ namespace widebot{
     std::string HELP = "help";
     std::string PREFIX = "prefix";
     std::string WIDE = "wide";
+    std::string EMOJI = "emoji";
   } commands;
 
   class WideBot : public SleepyDiscord::DiscordClient {
@@ -37,6 +38,7 @@ namespace widebot{
     int parseCommand(const std::string& msg, std::string* cmd, std::string* args);
     int parseNumSplits(const std::string& args);
     std::vector<std::list<Magick::Image>> splitImage(const std::list<Magick::Image> &image, const int &num_splits);
+    int createEmoji(SleepyDiscord::Snowflake<SleepyDiscord::Server> serverID, const std::string &name, const std::list<Magick::Image> &image, std::vector<SleepyDiscord::Snowflake<SleepyDiscord::Role>> roles);
   };
 
 } //namespace widebot
