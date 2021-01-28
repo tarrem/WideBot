@@ -1,21 +1,3 @@
-[submodule "lib/discordpp"]
-	path = lib/discordpp
-	url = https://github.com/DiscordPP/discordpp
-[submodule "lib/rest-beast"]
-	path = lib/rest-beast
-	url = https://github.com/DiscordPP/rest-beast/
-[submodule "lib/websocket-simpleweb"]
-	path = lib/websocket-simpleweb
-	url = https://github.com/DiscordPP/websocket-simpleweb
-[submodule "lib/plugin-ratelimit"]
-	path = lib/plugin-ratelimit
-	url = https://github.com/DiscordPP/plugin-ratelimit
-[submodule "lib/plugin-overload"]
-	path = lib/plugin-overload
-	url = https://github.com/DiscordPP/plugin-overload
-[submodule "lib/plugin-responder"]
-	path = lib/plugin-responder
-	url = https://github.com/DiscordPP/plugin-responder
 [submodule "lib/sleepy-discord"]
 	path = lib/sleepy-discord
 	url = https://github.com/yourWaifu/sleepy-discord
